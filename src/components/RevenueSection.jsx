@@ -1,57 +1,95 @@
-
+/* eslint-disable react-hooks/exhaustive-deps */
+import { useEffect } from 'react';
+import Chart from 'chart.js/auto'; // Import Chart.js
 
 const RevenueSection = () => {
+  const data = {
+    labels: ['2023-09-01', '2023-09-02', '2023-09-03', '2023-09-04', '2023-09-05'],
+    datasets: [
+      {
+        label: 'Revenue',
+        data: [10000, 20000, 30000, 40000, 50000],
+        fill: true, // Fill area under the line
+        borderColor: '#000000', // Line color
+        backgroundColor: 'rgba(255, 0, 0, 0.3)', // Fill color
+        tension: 0.1
+      }
+    ]
+  };
+
+  const options = {
+    scales: {
+      x: {
+        title: {
+          display: true,
+          text: 'Time',
+          font: {
+            size: 12,
+            family: 'Arial'
+          }
+        },
+        ticks: {
+          font: {
+            size: 10,
+            family: 'Arial'
+          }
+        }
+      },
+      y: {
+        beginAtZero: true,
+        title: {
+          display: true,
+          text: 'Revenue',
+          font: {
+            size: 12,
+            family: 'Arial'
+          }
+        },
+        ticks: {
+          callback: function (value) {
+            return '$' + value.toLocaleString();
+          },
+          font: {
+            size: 10,
+            family: 'Arial'
+          }
+        }
+      }
+    },
+    plugins: {
+      title: {
+        display: true,
+        text: 'Revenue over time',
+        font: {
+          size: 12,
+          family: 'Arial'
+        }
+      }
+    }
+  };
+
+  useEffect(() => {
+    // Create a new chart
+    const chartElement = document.getElementById('revenueChart');
+    const newChart = new Chart(chartElement, {
+      type: 'line',
+      data: data,
+      options: options
+    });
+
+    // Return a cleanup function to destroy the chart when the component unmounts
+    return () => {
+      newChart.destroy();
+    };
+  }, [data, options]);
+
   return (
-    <>
-     <div className="overlap-2">
-          <div className="revenue-sales">
-            <div className="text">
-              <div className="body-6">Revenue over time</div>
-            </div>
-            <div className="revenue">
-              <div className="body-7">50K</div>
-              <div className="body-8">40K</div>
-              <div className="body-8">30K</div>
-              <div className="body-8">20K</div>
-              <div className="body-8">10K</div>
-            </div>
-            <div className="overlap-3">
-              <div className="line-horizontal">
-                <img className="line-4" src="img/line-6.svg" />
-                <img className="line-5" src="img/line-7.svg" />
-                <img className="line-6" src="img/line-8.svg" />
-                <img className="line-7" src="img/line-9.svg" />
-                <img className="line-8" src="img/line-10.svg" />
-              </div>
-              <img className="chart" src="img/chart.png" />
-              <div className="group-2">
-                <div className="div-wrapper">
-                  <div className="ellipse-2" />
-                </div>
-                <img className="line-9" src="img/line-5-1.svg" />
-                <div className="frame-4">
-                  <div className="text-wrapper-3">$40,567.88</div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="frame-5">
-            <div className="body-9">Jan</div>
-            <div className="body-9">Feb</div>
-            <div className="body-10">Mar</div>
-            <div className="body-11">Apr</div>
-            <div className="body-11">May</div>
-            <div className="body-11">Jun</div>
-            <div className="body-11">Jul</div>
-            <div className="body-11">Sep</div>
-            <div className="body-11">Aug</div>
-            <div className="body-11">Oct</div>
-            <div className="body-11">Nov</div>
-            <div className="body-11">Dec</div>
-          </div>
-        </div>
-    </>
-  )
+    <div className="overlap-2">
+      <div className="revenue-sales">
+        <canvas id="revenueChart"></canvas>
+      </div>
+    </div>
+  );
 }
 
-export default RevenueSection
+export default RevenueSection;

@@ -3,14 +3,54 @@ import downArrow from "../assets/arrow-narrow-down-1.svg";
 import downArrowBig from "../assets/arrow-narrow-down-2.svg";
 import chevronDown from "../assets/chevron-down-2.svg";
 import line from "../assets/line-5.svg";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import {apiGet} from "../Context/Api/Axios"
 
 const Header = () => {
     const [isOpen, setIsOpen] = useState(false);
+    const [totalRevenue, setTotalRevenue] = useState(null);
+    const [totalOrder, setTotalOrder] = useState(null);
+    const [totalCustomer, setTotalCustomer] = useState(null);
+
 
     const toggleDropdown = () => {
       setIsOpen(!isOpen);
     };
+
+    const fetchTotalRevenueData = async () => {
+        try {
+            const response = await apiGet("/api/total-revenue")
+            setTotalRevenue(response.data);
+        } catch (error) {
+            console.error("Error fetching total revenue:", error);
+        }
+    }
+
+    const fetchOrdersData = async () => {
+        try {
+            const response = await apiGet("/api/total-orders")
+            setTotalOrder(response.data);
+        } catch (error) {
+            console.error("Error fetching total revenue:", error);
+        }
+    }
+
+    const fetchCustomersData = async () => {
+        try {
+            const response = await apiGet("/api/total-customers")
+            setTotalCustomer(response.data);
+        } catch (error) {
+            console.error("Error fetching total revenue:", error);
+        }
+    }
+
+    useEffect( () => {
+        fetchTotalRevenueData()
+        fetchOrdersData()
+        fetchCustomersData()
+      }, []);
+
+
   return (
     <>
     <div className="title">
@@ -25,7 +65,7 @@ const Header = () => {
             </div>
             <div className="frame">
               <div className="amount">
-                <div className="body-2">$40,000</div>
+              <div className="body-2">${totalRevenue?.toLocaleString()}</div>
                 <div className="frame-2">
                   <img className="img" src={upArrow} />
                   <div className="body-3">59%</div>
@@ -40,7 +80,7 @@ const Header = () => {
             </div>
             <div className="frame">
               <div className="amount">
-                <div className="body-2">40,000</div>
+                <div className="body-2">{totalOrder?.toLocaleString()}</div>
                 <div className="frame-3">
                   <img className="img" src={downArrow} />
                   <div className="body-4">9%</div>
@@ -55,7 +95,7 @@ const Header = () => {
             </div>
             <div className="frame">
               <div className="amount">
-                <div className="body-2">40</div>
+                <div className="body-2">{totalCustomer?.toLocaleString()}</div>
                 <div className="frame-3">
                   <img className="img" src={downArrowBig} />
                   <div className="body-4">59%</div>

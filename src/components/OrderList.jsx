@@ -1,4 +1,5 @@
-
+import dot from "../assets/dots-1.svg"
+import line from "../assets/line-12.svg"
 
 const OrderList = () => {
   return (
@@ -9,11 +10,11 @@ const OrderList = () => {
             <div className="overlap-4">
               <div className="header-2">
                 <div className="checkbox" />
-                <img className="dots" src="img/dots-1.svg" />
+                <img className="dots" src={dot} />
               </div>
               <div className="row">
                 <div className="checkbox-2" />
-                <img className="dots-2" src="img/dots-4.svg" />
+                <img className="dots-2" src={dot} />
               </div>
               <div className="overlap-group-wrapper">
                 <div className="overlap-group-2">
@@ -28,7 +29,7 @@ const OrderList = () => {
                       <div className="text-wrapper-6">Ceil Tharme</div>
                     </div>
                   </div>
-                  <img className="dots-3" src="img/dots-3.svg" />
+                  <img className="dots-3" src={dot} />
                 </div>
               </div>
               <div className="overlap-wrapper">
@@ -63,11 +64,11 @@ const OrderList = () => {
                     <div className="text-wrapper-22">$2,699.00</div>
                     <div className="text-wrapper-23">$399.00</div>
                   </div>
-                  <img className="dots-4" src="img/dots-4.svg" />
+                  <img className="dots-4" src={dot} />
                 </div>
               </div>
-              <img className="line-10" src="img/line-12.svg" />
-              <img className="line-11" src="img/line-12.svg" />
+              <img className="line-10" src={line} />
+              <img className="line-11" src={line} />
             </div>
           </div>
         </div>
