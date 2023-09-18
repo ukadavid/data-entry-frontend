@@ -73,7 +73,7 @@ const Header = () => {
               </div>
             </div>
           </div>
-          <img className="line-2" src="img/line-3.svg" />
+          <img className="line-2" src={line} />
           <div className="card-summary-job">
             <div className="tittle">
               <div className="body">Orders</div>

@@ -63,7 +63,7 @@ const Sidebar = () => {
       toast.error('All fields are required');
       return;
     }
-    submitOrder(setFormData(formData))
+    submitOrder(formData)
 
     setFormData({
       customerName: '',
@@ -73,8 +73,6 @@ const Sidebar = () => {
       orderDate: '',
     });
 
-
-    toast.success('Form submitted successfully');
   };
 
   return (

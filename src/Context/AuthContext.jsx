@@ -13,27 +13,25 @@ const DataProvider = ({ children }) => {
 
   const submitOrder = async (formData) => {
     try {
-      const registerData = {
-        firstName: formData.firstName,
-        lastName: formData.lastName,
-        userName: formData.userName,
-        email: formData.email,
+      const orderData = {
+        customerName: formData.customerName,
+        productName: formData.productName,
+        productCategory: formData.productCategory,
+        price: formData.price,
         phoneNumber: formData.phoneNumber,
-        password: formData.password,
-        confirmPassword: formData.confirmPassword,
+        orderDate: formData.orderDate,
       };
 
       
-      console.log(registerData)
-      const response = await apiPost("/user/auth/register", registerData);
+      console.log(orderData)
+      const response = await apiPost("/api/orders", orderData);
       const data = await response.data;
       console.log(data);
       toast.success(data.displayMessage);
 
       setTimeout(() => {
-        const userEmail = registerData.email;
-         window.location.href = `/verify?userId=${userEmail}`;
-  
+         window.location.reload = '/';
+
       }, 2000);
     } catch (error) {
       toast.error(error.response.data.errorMessages[0]);
