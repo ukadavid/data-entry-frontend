@@ -1,79 +1,81 @@
-import dot from "../assets/dots-1.svg"
-import line from "../assets/line-12.svg"
+import { useState, useEffect } from "react";
+import dot from "../assets/dots-1.svg";
+import { apiGet } from "../Context/Api/Axios";
+import { formatDate } from "../Utils/formData";
+import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 
 const OrderList = () => {
+  const [orders, setOrders] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  // eslint-disable-next-line no-unused-vars
+  const [itemsPerPage, setItemsPerPage] = useState(3);
+
+  useEffect(() => {
+    apiGet("/api/orders") // Use Axios to fetch data
+      .then((response) => setOrders(response.data))
+      .catch((error) => console.error("Error fetching data:", error));
+  }, []);
+
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = orders.slice(indexOfFirstItem, indexOfLastItem);
+
+  const handlePrevClick = () => {
+    setCurrentPage(currentPage - 1);
+  };
+
+  const handleNextClick = () => {
+    setCurrentPage(currentPage + 1);
+  };
+
   return (
-   <>
-         <div className="best-selling-sales">
-          <div className="text-wrapper-4">Orders</div>
-          <div className="table">
-            <div className="overlap-4">
-              <div className="header-2">
-                <div className="checkbox" />
-                <img className="dots" src={dot} />
-              </div>
-              <div className="row">
-                <div className="checkbox-2" />
-                <img className="dots-2" src={dot} />
-              </div>
-              <div className="overlap-group-wrapper">
-                <div className="overlap-group-2">
-                  <div className="background" />
-                  <div className="checkbox-3" />
-                  <div className="group-3">
-                    <div className="text-wrapper-5">Customer name</div>
-                    <div className="name">
-                      <div className="text-wrapper-6">Mathe Struijs</div>
-                    </div>
-                    <div className="name-2">
-                      <div className="text-wrapper-6">Ceil Tharme</div>
-                    </div>
-                  </div>
-                  <img className="dots-3" src={dot} />
-                </div>
-              </div>
-              <div className="overlap-wrapper">
-                <div className="overlap-5">
-                  <div className="background-2" />
-                  <div className="checkbox-4" />
-                  <div className="name-3">
-                    <div className="text-wrapper-6" />
-                  </div>
-                  <div className="group-4">
-                    <div className="text-wrapper-7">Product name</div>
-                    <div className="text-wrapper-8">House</div>
-                    <div className="text-wrapper-9">The Losers</div>
-                    <div className="text-wrapper-10">Head On</div>
-                    <div className="text-wrapper-11">Christine Hain</div>
-                  </div>
-                  <div className="group-5">
-                    <div className="text-wrapper-12">Category</div>
-                    <div className="text-wrapper-13">Documentary</div>
-                    <div className="text-wrapper-14">Comedy</div>
-                    <div className="text-wrapper-15">Drama</div>
-                  </div>
-                  <div className="group-6">
-                    <div className="text-wrapper-16">Date</div>
-                    <div className="text-wrapper-17">4/5/2020</div>
-                    <div className="text-wrapper-18">5/5/2020</div>
-                    <div className="text-wrapper-19">3/2/2020</div>
-                  </div>
-                  <div className="group-7">
-                    <div className="text-wrapper-20">Price</div>
-                    <div className="text-wrapper-21">$2,999.00</div>
-                    <div className="text-wrapper-22">$2,699.00</div>
-                    <div className="text-wrapper-23">$399.00</div>
-                  </div>
-                  <img className="dots-4" src={dot} />
-                </div>
-              </div>
-              <img className="line-10" src={line} />
-              <img className="line-11" src={line} />
-            </div>
+    <div className="flex-order-table">
+      <div>
+        <h3 className="order-h3">Order</h3>
+      </div>
+      <div className="table__row table__row--header">
+        <div className="empty">
+          <input type="checkbox" name="my_checkbox" value="true" />
+        </div>
+        <div className="column propertyId">Customer Name</div>
+        <div className="column streetAddress">Product Name</div>
+        <div className="column city">Category</div>
+        <div className="column state">Date</div>
+        <div className="column zip">Price</div>
+        <div className="dot-order">
+          <img src={dot} alt="line image" />
+        </div>
+      </div>
+
+      {currentItems.map((order) => (
+        <div className="table__row" key={order._id}>
+          <div className="empty">
+            <input type="checkbox" name="my_checkbox" value="true" />
+          </div>
+          <div className="column propertyId">{order.customerName}</div>
+          <div className="column streetAddress">{order.productName}</div>
+          <div className="column city">{order.productCategory}</div>
+          <div className="column state">{formatDate(order.orderDate)}</div>
+          <div className="column zip">${order.price.toFixed(2)}</div>
+          <div className="dot-order">
+            <img src={dot} alt="line image" />
           </div>
         </div>
-   </>
-  )
-}
+      ))}
 
-export default OrderList
+      <div className="pagination">
+        <button onClick={handlePrevClick} disabled={currentPage === 1}>
+          <FaChevronLeft />
+        </button>
+        <button
+          onClick={handleNextClick}
+          disabled={currentItems.length < itemsPerPage}
+        >
+          <FaChevronRight />
+        </button>
+      </div>
+    </div>
+  );
+};
+
+export default OrderList;

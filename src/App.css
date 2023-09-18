@@ -1207,6 +1207,68 @@
   font-style: var(--body-small-semibold-font-style);
 }
 
+.flex-order-table {
+  display: flex;
+  flex-direction: column;
+  width: 95%;
+  position: absolute;
+  bottom: 0;
+  left: 28px;
+  border-radius: 12px;
+  background: #fff;
+  padding: 15px 0;
+}
+.order-h3 {
+  color: #64748b;
+  font-family: Inter;
+  font-size: 15px;
+  font-style: normal;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  margin-left: 20px;
+  margin-bottom: 20px;
+}
+
+.table__row {
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid #f1f5f9;
+  margin: 0 20px;
+}
+.empty {
+  padding: 10px;
+}
+.pagination {
+  margin-left: 32px;
+  margin-top: 5px;
+}
+
+input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.dot-order {
+  margin-right: 20px;
+}
+
+.table__row--header {
+  border-radius: 8px;
+  background: var(--greyscale-50);
+  color: var(--greyscale-500, #64748b);
+  font-family: Inter;
+  font-style: normal;
+  font-weight: 500;
+  margin: 0 20px;
+}
+
+.column {
+  flex: 1;
+  padding: 10px;
+}
+
 .overview .dots-4 {
   top: 47px;
   position: absolute;
