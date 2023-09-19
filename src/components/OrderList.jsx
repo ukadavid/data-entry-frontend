@@ -7,7 +7,6 @@ import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 const OrderList = () => {
   const [orders, setOrders] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  // eslint-disable-next-line no-unused-vars
   const [itemsPerPage, setItemsPerPage] = useState(3);
 
   useEffect(() => {
@@ -55,7 +54,7 @@ const OrderList = () => {
           <div className="column propertyId">{order.customerName}</div>
           <div className="column streetAddress">{order.productName}</div>
           <div className="column city">{order.productCategory}</div>
-          <div className="column state">{formatDate(order.orderDate)}</div>
+          <div className="column state">{formatDate(order.orderDate, "M/D/YYYY")}</div>
           <div className="column zip">${order.price.toFixed(2)}</div>
           <div className="dot-order">
             <img src={dot} alt="line image" />

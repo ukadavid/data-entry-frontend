@@ -1,4 +1,4 @@
 export const formatDate = (date) => {
-    const options = { weekday: "long", year: "numeric", month: "long", day: "numeric" };
-    return new Date(date).toLocaleDateString(undefined, options);
-  };
+  const options = { day: "numeric", month: "numeric", year: "numeric" };
+  return new Date(date).toLocaleDateString(undefined, options);
+};
