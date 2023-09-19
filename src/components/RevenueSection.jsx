@@ -16,7 +16,7 @@ const RevenueSection = () => {
         const revenueByDate = {};
         orders.forEach(order => {
           const date = new Date(order.orderDate);
-          const formattedDate = `${date.getMonth() + 1}-${date.getFullYear()}`;
+          const formattedDate = date.toLocaleString('default', { month: 'long' });
           if (revenueByDate[formattedDate]) {
             revenueByDate[formattedDate] += order.price;
           } else {
@@ -25,8 +25,8 @@ const RevenueSection = () => {
         });
 
         // Convert revenueByDate object to arrays for chart data
-        const labels = Object.keys(revenueByDate).sort();
-        const data = Object.values(revenueByDate).sort();
+        const labels = Object.keys(revenueByDate);
+        const data = Object.values(revenueByDate);
 
         setRevenueData({ labels, data });
       } catch (error) {
@@ -47,7 +47,6 @@ const RevenueSection = () => {
           labels: revenueData.labels,
           datasets: [
             {
-              label: 'Revenue',
               data: revenueData.data,
               fill: true,
               borderColor: '#2563EB', // Curve color
@@ -60,37 +59,27 @@ const RevenueSection = () => {
           scales: {
             x: {
               title: {
-                display: true,
-                text: 'Time',
-                font: {
-                  size: 12,
-                  family: 'Arial'
-                }
+                display: false, // Remove x-axis title
               },
               ticks: {
                 font: {
-                  size: 10,
-                  family: 'Arial'
+                  size: 9,
+                  family: 'Inter'
                 }
               }
             },
             y: {
               beginAtZero: true,
               title: {
-                display: true,
-                text: 'Revenue',
-                font: {
-                  size: 12,
-                  family: 'Arial'
-                }
+                display: false, // Remove y-axis title
               },
               ticks: {
                 callback: function (value) {
                   return '$' + value.toLocaleString();
                 },
                 font: {
-                  size: 10,
-                  family: 'Arial'
+                  size: 9,
+                  family: 'Inter'
                 }
               }
             }
@@ -100,9 +89,13 @@ const RevenueSection = () => {
               display: true,
               text: 'Revenue over time',
               font: {
-                size: 12,
-                family: 'Arial'
-              }
+                size: 11,
+                family: 'Inter'
+              },
+              align: 'start' // Align to the left
+            },
+            legend: {
+              display: false // Remove the legend completely
             }
           }
         }

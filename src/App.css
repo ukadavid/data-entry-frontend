@@ -455,6 +455,7 @@
   left: 0;
   background-color: #ffffff;
   border-radius: 12px;
+  padding: 20px;
 }
 
 .overview .text {
@@ -1234,6 +1235,10 @@
   align-items: center;
   border-bottom: 1px solid #f1f5f9;
   margin: 0 20px;
+}
+
+.table__row div {
+  font-size: smaller;
 }
 .empty {
   padding: 10px;

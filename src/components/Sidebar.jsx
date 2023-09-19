@@ -37,7 +37,7 @@ const Sidebar = () => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await apiGet("/api/categories");
+        const response = await apiGet("/api/orders");
         setCategories(response.data); // Assuming the categories are returned as an array in response.data
       } catch (error) {
         console.error("Error fetching categories:", error);
@@ -46,6 +46,10 @@ const Sidebar = () => {
 
     fetchCategories();
   }, []);
+
+  const uniqueCategories = [
+    ...new Set(categories.map((category) => category.productCategory)),
+  ];
 
   const [formData, setFormData] = useState({
     customerName: "",
@@ -123,7 +127,7 @@ const Sidebar = () => {
             <div className="frame-6">
               <div className="name-5" onClick={openInvoicebar}>
                 <img className="img-2" src={sales} />
-                <div className="text-wrapper-26 ">Sales</div>
+                <div className="text-wrapper-26 ">Create Order</div>
               </div>
             </div>
           </div>
@@ -193,9 +197,9 @@ const Sidebar = () => {
                 onChange={handleChange}
               >
                 <option value="">Select Category</option>
-                {categories.map((category) => (
-                  <option key={category.id} value={category.name}>
-                    {category.name}
+                {uniqueCategories.map((category) => (
+                  <option key={category} value={category}>
+                    {category}
                   </option>
                 ))}
               </select>
