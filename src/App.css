@@ -1665,6 +1665,7 @@ input[type="checkbox"] {
   position: relative;
   width: 22px;
   height: 22px;
+  cursor: pointer;
 }
 
 .overview .text-wrapper-24 {
@@ -1782,6 +1783,7 @@ input[type="checkbox"] {
   gap: 16px;
   position: relative;
   flex: 0 0 auto;
+  cursor: pointer;
 }
 
 .overview .text-wrapper-26 {
@@ -1796,6 +1798,7 @@ input[type="checkbox"] {
   line-height: var(--body-large-medium-line-height);
   white-space: nowrap;
   font-style: var(--body-large-medium-font-style);
+  cursor: pointer;
 }
 
 .invoiceModal {

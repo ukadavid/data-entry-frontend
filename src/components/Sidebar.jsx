@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from "react";
 import logo from "../assets/exclude-4.svg";
 import line from "../assets/line-1.svg";
 import settings from "../assets/settings-1.svg";
@@ -10,14 +10,16 @@ import customers from "../assets/calendar-3.svg";
 import inventory from "../assets/history-3.svg";
 import profitLoss from "../assets/star-3.svg";
 import "../App.css";
-import { toast } from 'react-toastify';
-import { FaTimes } from 'react-icons/fa';
+import { toast } from "react-toastify";
+import { FaTimes } from "react-icons/fa";
 import { useAuth } from "../Context/AuthContext";
+import { apiGet } from "../Context/Api/Axios";
 
 const Sidebar = () => {
   const { submitOrder } = useAuth();
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [invoicebarOpen, setInvoicebarOpen] = useState(false);
+  const [categories, setCategories] = useState([]);
 
   const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen);
@@ -30,15 +32,27 @@ const Sidebar = () => {
   const closeInvoicebar = () => {
     console.log("Close button clicked", invoicebarOpen);
     setInvoicebarOpen(false);
-    
   };
 
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await apiGet("/api/categories");
+        setCategories(response.data); // Assuming the categories are returned as an array in response.data
+      } catch (error) {
+        console.error("Error fetching categories:", error);
+      }
+    };
+
+    fetchCategories();
+  }, []);
+
   const [formData, setFormData] = useState({
-    customerName: '',
-    productName: '',
-    productCategory: '',
-    price: '',
-    orderDate: '',
+    customerName: "",
+    productName: "",
+    productCategory: "",
+    price: "",
+    orderDate: "",
   });
 
   const handleChange = (e) => {
@@ -52,32 +66,35 @@ const Sidebar = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Basic frontend validation
+    const textRegex = /^[A-Za-z\s]+$/;
+
     if (
-      !formData.customerName ||
-      !formData.productName ||
+      !formData.customerName.match(textRegex) ||
+      !formData.productName.match(textRegex) ||
       !formData.productCategory ||
-      !formData.price ||
+      isNaN(formData.price) ||
       !formData.orderDate
     ) {
-      toast.error('All fields are required');
+      toast.error("Please enter valid information in all fields");
       return;
     }
-    submitOrder(formData)
+
+    submitOrder(formData);
 
     setFormData({
-      customerName: '',
-      productName: '',
-      productCategory: '',
-      price: '',
-      orderDate: '',
+      customerName: "",
+      productName: "",
+      productCategory: "",
+      price: "",
+      orderDate: "",
     });
-
   };
 
   return (
     <>
-      <div className={`sidebar-job-search ${sidebarOpen ? '' : 'sidebar-closed'}`}>
+      <div
+        className={`sidebar-job-search ${sidebarOpen ? "" : "sidebar-closed"}`}
+      >
         <div className="logo">
           <img className="exclude" src={logo} />
           <div className="hiphonic">XYZ shop</div>
@@ -106,8 +123,7 @@ const Sidebar = () => {
             <div className="frame-6">
               <div className="name-5" onClick={openInvoicebar}>
                 <img className="img-2" src={sales} />
-                <div className="text-wrapper-26">Sales</div>
-                
+                <div className="text-wrapper-26 ">Sales</div>
               </div>
             </div>
           </div>
@@ -138,67 +154,74 @@ const Sidebar = () => {
         </div>
       </div>
       {invoicebarOpen && (
-                  <div className={`invoiceModal ${invoicebarOpen ? 'open' : ''}`}>
-                    <FaTimes
-                      onClick={closeInvoicebar}
-                      size={32}
-                      color="blue"
-                      style={{ position: 'absolute', top: '10px', right: '10px', cursor: 'pointer' }}
-                    />
-                    <form onSubmit={handleSubmit}>
-                      <div>
-                        <label>Customer Name:</label>
-                        <input
-                          type="text"
-                          name="customerName"
-                          value={formData.customerName}
-                          onChange={handleChange}
-                        />
-                      </div>
-                      <div>
-                        <label>Product Name:</label>
-                        <input
-                          type="text"
-                          name="productName"
-                          value={formData.productName}
-                          onChange={handleChange}
-                        />
-                      </div>
-                      <div>
-                        <label>Product Category:</label>
-                        <select
-                          name="productCategory"
-                          value={formData.productCategory}
-                          onChange={handleChange}
-                        >
-                          <option value="">Select Category</option>
-                          <option value="Category 1">Category 1</option>
-                          <option value="Category 2">Category 2</option>
-                          <option value="Category 3">Category 3</option>
-                        </select>
-                      </div>
-                      <div>
-                        <label>Price:</label>
-                        <input
-                          type="number"
-                          name="price"
-                          value={formData.price}
-                          onChange={handleChange}
-                        />
-                      </div>
-                      <div>
-                        <label>Order Date:</label>
-                        <input
-                          type="date"
-                          name="orderDate"
-                          value={formData.orderDate}
-                          onChange={handleChange}
-                        />
-                      </div>
-                      <button type="submit">Submit</button>
-                    </form>
-                  </div>
-                )}
+        <div className={`invoiceModal ${invoicebarOpen ? "open" : ""}`}>
+          <FaTimes
+            onClick={closeInvoicebar}
+            size={32}
+            color="blue"
+            style={{
+              position: "absolute",
+              top: "10px",
+              right: "10px",
+              cursor: "pointer",
+            }}
+          />
+          <form onSubmit={handleSubmit}>
+            <div>
+              <label>Customer Name:</label>
+              <input
+                type="text"
+                name="customerName"
+                value={formData.customerName}
+                onChange={handleChange}
+              />
+            </div>
+            <div>
+              <label>Product Name:</label>
+              <input
+                type="text"
+                name="productName"
+                value={formData.productName}
+                onChange={handleChange}
+              />
+            </div>
+            <div>
+              <label>Product Category:</label>
+              <select
+                name="productCategory"
+                value={formData.productCategory}
+                onChange={handleChange}
+              >
+                <option value="">Select Category</option>
+                {categories.map((category) => (
+                  <option key={category.id} value={category.name}>
+                    {category.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div>
+              <label>Price:</label>
+              <input
+                type="number"
+                name="price"
+                value={formData.price}
+                onChange={handleChange}
+              />
+            </div>
+            <div>
+              <label>Order Date:</label>
+              <input
+                type="date"
+                name="orderDate"
+                value={formData.orderDate}
+                onChange={handleChange}
+              />
+            </div>
+            <button type="submit">Submit</button>
+          </form>
+        </div>
+      )}
     </>
   );
 };
